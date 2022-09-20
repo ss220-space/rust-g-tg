@@ -19,7 +19,6 @@ const NO_RESULTS_YET: &str = "NO RESULTS YET";
 const NO_SUCH_JOB: &str = "NO SUCH JOB";
 const JOB_PANICKED: &str = "JOB PANICKED";
 
-#[derive(Default)]
 struct Jobs {
     map: HashMap<JobId, Job>,
     next_job: usize,
@@ -52,19 +51,41 @@ impl Jobs {
 }
 
 thread_local! {
-    static JOBS: RefCell<Jobs> = RefCell::new(
-        Jobs {
-            map: Default::default(),
-            next_job: 0,
-            pool: Builder::new().num_threads(64).thread_stack_size(512 * 1024).build()
-        }
-    )
+    static JOBS: RefCell<Option<Jobs>> = RefCell::new(None);
 }
 
 pub fn start<F: FnOnce() -> Output + Send + 'static>(f: F) -> JobId {
-    JOBS.with(|jobs| jobs.borrow_mut().start(f))
+    JOBS.with(|jobs| {
+        let mut option = jobs.borrow_mut();
+        if option.is_none() {
+            *option = Some(
+                Jobs {
+                    map: Default::default(),
+                    next_job: 0,
+                    pool: Builder::new().thread_stack_size(512 * 1024).num_threads(64).build()
+                }
+            );
+        }
+
+        option.as_mut().unwrap().start(f)
+    })
+
+}
+
+pub fn shutdown_workers() {
+    JOBS.with(|opt|
+        opt.take().map(|jobs| {
+            jobs.pool.join()
+        })
+    );
 }
 
 pub fn check(id: &str) -> String {
-    JOBS.with(|jobs| jobs.borrow_mut().check(id))
+    JOBS.with(|jobs| {
+        if let Some(jobs) = jobs.borrow_mut().as_mut() {
+            jobs.check(id)
+        } else {
+            JOB_PANICKED.to_owned()
+        }
+    })
 }
