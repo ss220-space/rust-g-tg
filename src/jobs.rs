@@ -1,15 +1,15 @@
 //! Job system
-use flume::Receiver;
 use std::{
     cell::RefCell,
-    collections::hash_map::{Entry, HashMap}
+    collections::hash_map::{Entry, HashMap},
+    sync::mpsc
 };
 use workerpool::Pool;
 use workerpool::Builder;
 use workerpool::thunk::{ThunkWorker, Thunk};
 
 struct Job {
-    rx: Receiver<Output>
+    rx: mpsc::Receiver<Output>
 }
 
 type Output = String;
@@ -27,7 +27,7 @@ struct Jobs {
 
 impl Jobs {
     fn start<F: FnOnce() -> Output + Send + 'static>(&mut self, f: F) -> JobId {
-        let (tx, rx) = flume::channel();
+        let (tx, rx) = mpsc::channel();
         self.pool.execute_to(tx, Thunk::of(|| f()));
         let id = self.next_job.to_string();
         self.next_job += 1;
@@ -42,8 +42,8 @@ impl Jobs {
         };
         let result = match entry.get().rx.try_recv() {
             Ok(result) => result,
-            Err(flume::TryRecvError::Disconnected) => JOB_PANICKED.to_owned(),
-            Err(flume::TryRecvError::Empty) => return NO_RESULTS_YET.to_owned(),
+            Err(mpsc::TryRecvError::Disconnected) => JOB_PANICKED.to_owned(),
+            Err(mpsc::TryRecvError::Empty) => return NO_RESULTS_YET.to_owned(),
         };
         let _ = entry.remove();
         result
