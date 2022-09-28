@@ -44,6 +44,8 @@ pub mod redis_reliablequeue;
 pub mod sanitize;
 #[cfg(feature = "sql")]
 pub mod sql;
+#[cfg(feature = "text")]
+pub mod text;
 #[cfg(feature = "time")]
 pub mod time;
 #[cfg(feature = "toml")]

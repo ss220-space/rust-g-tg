@@ -2567,6 +2567,7 @@ dependencies = [
  "thiserror",
  "toml",
  "tracy_full",
+ "translit",
  "twox-hash",
  "ureq",
  "url",
@@ -3132,6 +3133,12 @@ dependencies = [
  "rustc_version",
  "tracy-client-sys",
 ]
+
+[[package]]
+name = "translit"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e21e0a7cd15b8a1159a6dbcfd96d7bd4f9d050c31143d1ba743c6cfe60a71063"
 
 [[package]]
 name = "twox-hash"
