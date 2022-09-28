@@ -57,6 +57,7 @@ dbpnoise = { version = "0.1.2", optional = true }
 pathfinding = { version = "4.2.1", optional = true }
 num = { version = "0.4.0", optional = true }
 workerpool = "1.2.0"
+translit = { version = "0.5.0", optional = true }
 
 [features]
 default = [
@@ -107,6 +108,7 @@ redis_pubsub = ["flume", "redis", "serde", "serde_json"]
 redis_reliablequeue = ["flume", "redis", "serde", "serde_json"]
 unzip = ["zip", "jobs"]
 worleynoise = ["rand", "rayon"]
+text = ["translit"]
 
 # internal feature-like things
 jobs = ["flume"]

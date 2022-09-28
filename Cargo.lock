@@ -2165,6 +2165,7 @@ dependencies = [
  "sha2",
  "thiserror",
  "toml",
+ "translit",
  "twox-hash",
  "url",
  "workerpool",
@@ -2716,6 +2717,12 @@ checksum = "7b7358be39f2f274f322d2aaed611acc57f382e8eb1e5b48cb9ae30933495ce7"
 dependencies = [
  "once_cell",
 ]
+
+[[package]]
+name = "translit"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e21e0a7cd15b8a1159a6dbcfd96d7bd4f9d050c31143d1ba743c6cfe60a71063"
 
 [[package]]
 name = "try-lock"
