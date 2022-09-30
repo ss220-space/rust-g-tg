@@ -2186,7 +2186,7 @@ dependencies = [
 
 [[package]]
 name = "rust-g"
-version = "1.0.3-ss220"
+version = "1.0.4-ss220"
 dependencies = [
  "aho-corasick",
  "base64",
