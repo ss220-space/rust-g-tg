@@ -1,7 +1,7 @@
 [package]
 name = "rust-g"
 edition = "2021"
-version = "1.0.3-ss220"
+version = "1.0.4-ss220"
 authors = ["Bjorn Neergaard <bjorn@neersighted.com>", "Tad Hardesty <tad@platymuus.com>", "rust-g maintainer team"]
 repository = "https://github.com/tgstation/rust-g"
 license = "MIT"
@@ -49,6 +49,7 @@ dbpnoise = { version = "0.1.2", optional = true}
 pathfinding = { version = "3.0.13", optional = true }
 num = { version = "0.4.0", optional = true }
 workerpool = "1.2.0"
+translit = { version = "0.5.0", optional = true }
 
 [features]
 default = ["acreplace", "cellularnoise", "dmi", "file", "git", "http", "json", "log", "noise", "sql", "time", "toml", "url"]
@@ -74,6 +75,7 @@ pathfinder = [ "num", "pathfinding", "serde", "serde_json"]
 redis_pubsub = ["flume", "redis", "serde", "serde_json"]
 unzip = ["zip", "jobs"]
 worleynoise = ["rand","rayon"]
+text = ["translit"]
 
 # internal feature-like things
 jobs = ["flume"]
