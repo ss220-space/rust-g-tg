@@ -1,4 +1,4 @@
-use translit::{Transliterator, CharsMapping};
+use translit::{CharsMapping, Transliterator};
 
 byond_fn!(fn cyrillic_to_latin (string) {
     Some(cyr_to_latin(string))
@@ -86,9 +86,8 @@ fn table_to_latin() -> CharsMapping {
         ("ю", "iu"),
         ("я", "ia"),
         ("№", "#"),
-    ].iter()
-        .cloned()
-        .collect()
+    ]
+    .to_vec()
 }
 
 fn table_from_latin() -> CharsMapping {
@@ -180,9 +179,8 @@ fn table_from_latin() -> CharsMapping {
         ("ю", "iu"),
         ("я", "ia"),
         ("№", "#"),
-    ].iter()
-        .cloned()
-        .collect()
+    ]
+    .to_vec()
 }
 
 #[cfg(test)]
@@ -192,7 +190,10 @@ mod tests {
     #[test]
     fn text_test() {
         let result = cyr_to_latin("Съешь же ещё этих мягких французских булок, да выпей чаю!");
-        assert_eq!(result, "Sieesh' zhe eshchyo etikh miagkikh frantsuzskikh bulok, da vypei chaiu!");
+        assert_eq!(
+            result,
+            "Sieesh' zhe eshchyo etikh miagkikh frantsuzskikh bulok, da vypei chaiu!"
+        );
 
         let result2 = cyr_to_latin("Привет мир! Hello world!");
         assert_eq!(result2, "Privet mir! Hello world!");

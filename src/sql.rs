@@ -69,7 +69,7 @@ byond_fn!(fn sql_disconnect_pool(handle) {
         Err(e) => return Some(err_to_json(e)),
     };
     Some(
-         match POOL.remove(&handle) {
+        match POOL.remove(&handle) {
             Some(_) => {
                 json!({
                     "status": "success"

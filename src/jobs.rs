@@ -2,14 +2,14 @@
 use std::{
     cell::RefCell,
     collections::hash_map::{Entry, HashMap},
-    sync::mpsc
+    sync::mpsc,
 };
-use workerpool::Pool;
+use workerpool::thunk::{Thunk, ThunkWorker};
 use workerpool::Builder;
-use workerpool::thunk::{ThunkWorker, Thunk};
+use workerpool::Pool;
 
 struct Job {
-    rx: mpsc::Receiver<Output>
+    rx: mpsc::Receiver<Output>,
 }
 
 type Output = String;
@@ -22,13 +22,13 @@ const JOB_PANICKED: &str = "JOB PANICKED";
 struct Jobs {
     map: HashMap<JobId, Job>,
     next_job: usize,
-    pool: Pool::<ThunkWorker<Output>>
+    pool: Pool<ThunkWorker<Output>>,
 }
 
 impl Jobs {
     fn start<F: FnOnce() -> Output + Send + 'static>(&mut self, f: F) -> JobId {
         let (tx, rx) = mpsc::channel();
-        self.pool.execute_to(tx, Thunk::of(|| f()));
+        self.pool.execute_to(tx, Thunk::of(f));
         let id = self.next_job.to_string();
         self.next_job += 1;
         self.map.insert(id.clone(), Job { rx });
@@ -58,26 +58,22 @@ pub fn start<F: FnOnce() -> Output + Send + 'static>(f: F) -> JobId {
     JOBS.with(|jobs| {
         let mut option = jobs.borrow_mut();
         if option.is_none() {
-            *option = Some(
-                Jobs {
-                    map: Default::default(),
-                    next_job: 0,
-                    pool: Builder::new().thread_stack_size(512 * 1024).num_threads(64).build()
-                }
-            );
+            *option = Some(Jobs {
+                map: Default::default(),
+                next_job: 0,
+                pool: Builder::new()
+                    .thread_stack_size(512 * 1024)
+                    .num_threads(64)
+                    .build(),
+            });
         }
 
         option.as_mut().unwrap().start(f)
     })
-
 }
 
 pub fn shutdown_workers() {
-    JOBS.with(|opt|
-        opt.take().map(|jobs| {
-            jobs.pool.join()
-        })
-    );
+    JOBS.with(|opt| opt.take().map(|jobs| jobs.pool.join()));
 }
 
 pub fn check(id: &str) -> String {
