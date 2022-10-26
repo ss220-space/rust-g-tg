@@ -60,12 +60,11 @@ fn write(data: &str, path: &str, base64decode: bool) -> Result<usize> {
 
     let mut file = BufWriter::new(File::create(path)?);
 
-    let written;
-    if base64decode {
-        written = file.write(base64::decode(data).unwrap().as_ref())?;
+    let written = if base64decode {
+        file.write(base64::decode(data).unwrap().as_ref())?
     } else {
-        written = file.write(data.as_bytes())?;
-    }
+        file.write(data.as_bytes())?
+    };
 
     file.flush()?;
     file.into_inner()
