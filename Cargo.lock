@@ -56,17 +56,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8da52d66c7071e2e3fa2a1e5c6d088fec47b593032b254f5e980de8ea54454d6"
 
 [[package]]
-name = "async-trait"
-version = "0.1.56"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96cf8829f67d2eab0b2dfa42c5d0ef737e0724e4a82b01b3e292456202b19716"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "autocfg"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1468,9 +1457,9 @@ dependencies = [
 
 [[package]]
 name = "noise"
-version = "0.8.1"
+version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13cc3e3ad4c2c5be33c35053984fd689c23af1b33c025d741d63631db051b13d"
+checksum = "9ba869e17168793186c10ca82c7079a4ffdeac4f1a7d9e755b9491c028180e40"
 dependencies = [
  "num-traits",
  "rand 0.7.3",
@@ -2068,16 +2057,15 @@ dependencies = [
 
 [[package]]
 name = "redis"
-version = "0.21.6"
+version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "571c252c68d09a2ad3e49edd14e9ee48932f3e0f27b06b4ea4c9b2a706d31103"
+checksum = "513b3649f1a111c17954296e4a3b9eecb108b766c803e2b99f179ebe27005985"
 dependencies = [
- "async-trait",
  "combine",
  "itoa",
  "percent-encoding",
  "ryu",
- "sha1 0.6.1",
+ "sha1_smol",
  "url",
 ]
 
@@ -2404,15 +2392,6 @@ dependencies = [
  "cfg-if",
  "cpufeatures",
  "digest",
-]
-
-[[package]]
-name = "sha1"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1da05c97445caa12d05e848c4a4fcbbea29e748ac28f7e80e9b010392063770"
-dependencies = [
- "sha1_smol",
 ]
 
 [[package]]
@@ -3074,7 +3053,7 @@ dependencies = [
  "flate2",
  "hmac",
  "pbkdf2",
- "sha1 0.10.1",
+ "sha1",
  "time 0.3.11",
  "zstd",
 ]
