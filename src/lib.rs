@@ -38,6 +38,8 @@ pub mod redis_pubsub;
 pub mod redis_reliablequeue;
 #[cfg(feature = "sql")]
 pub mod sql;
+#[cfg(feature = "text")]
+pub mod text;
 #[cfg(feature = "time")]
 pub mod time;
 #[cfg(feature = "toml")]
@@ -48,8 +50,6 @@ pub mod unzip;
 pub mod url;
 #[cfg(feature = "worleynoise")]
 pub mod worleynoise;
-#[cfg(feature = "text")]
-pub mod text;
 
 #[cfg(not(target_pointer_width = "32"))]
 compile_error!("rust-g must be compiled for a 32-bit target");
