@@ -25,15 +25,15 @@ jobs:
       - name: Rustfmt
         run: cargo fmt -- --check
 
-      - name: Build (release) (default features)
-        run: cargo build -Z build-std --target i686-win7-windows-msvc --locked --release
+      - name: Build (release) (all features)
+        run: cargo build --target i686-pc-windows-msvc --features all --locked --release
 
       - uses: actions/upload-artifact@v4
         with:
           name: Windows Build
           path: |
-            target/i686-win7-windows-msvc/release/rust_g.dll
-            target/i686-win7-windows-msvc/release/rust_g.pdb
+            target/i686-pc-windows-msvc/release/rust_g.dll
+            target/i686-pc-windows-msvc/release/rust_g.pdb
             target/rust_g.dm
 
   build-linux:
@@ -69,8 +69,8 @@ jobs:
         env:
           BYOND_BIN: /home/runner/BYOND/byond/bin
 
-      - name: Build (release) (default features)
-        run: cargo build --target i686-unknown-linux-gnu --locked --release
+      - name: Build (release) (all features)
+        run: cargo build --target i686-unknown-linux-gnu --locked --features all --release
 
       - uses: actions/upload-artifact@v4
         with:
