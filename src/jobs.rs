@@ -51,7 +51,7 @@ impl Jobs {
 }
 
 thread_local! {
-    static JOBS: RefCell<Option<Jobs>> = const { RefCell::new(None) };
+    static JOBS: RefCell<Option<Jobs>> = RefCell::new(None);
 }
 
 pub fn start<F: FnOnce() -> Output + Send + 'static>(f: F) -> JobId {
