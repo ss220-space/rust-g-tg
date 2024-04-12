@@ -1,5 +1,5 @@
 #![forbid(unsafe_op_in_unsafe_fn)]
-#[allow(clippy::thread_local_initializer_can_be_made_const)]
+#![allow(clippy::thread_local_initializer_can_be_made_const)]
 #[macro_use]
 mod byond;
 #[allow(dead_code)]
