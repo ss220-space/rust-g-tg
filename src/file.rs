@@ -53,7 +53,7 @@ fn exists(path: &str) -> String {
     path.exists().to_string()
 }
 
-fn write(data: &str, path: &str, base64decode: bool) -> Result<usize> {
+fn write(data: &str, path: &str, base64decode: bool) -> Result<()> {
     let path: &std::path::Path = path.as_ref();
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent)?;
@@ -61,15 +61,15 @@ fn write(data: &str, path: &str, base64decode: bool) -> Result<usize> {
 
     let mut file = BufWriter::new(File::create(path)?);
 
-    let written = if base64decode {
-        file.write(
+    if base64decode {
+        file.write_all(
             base64::prelude::BASE64_STANDARD
                 .decode(data)
                 .unwrap()
                 .as_ref(),
         )?
     } else {
-        file.write(data.as_bytes())?
+        file.write_all(data.as_bytes())?
     };
 
     file.flush()?;
@@ -77,7 +77,7 @@ fn write(data: &str, path: &str, base64decode: bool) -> Result<usize> {
         .map_err(|e| std::io::Error::new(e.error().kind(), e.error().to_string()))? // This is god-awful, but the compiler REFUSES to let me get an owned copy of `e`
         .sync_all()?;
 
-    Ok(written)
+    Ok(())
 }
 
 fn append(data: &str, path: &str) -> Result<usize> {
