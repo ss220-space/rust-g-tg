@@ -13,6 +13,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ilammy/setup-nasm@v1
 
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -30,7 +31,7 @@ jobs:
       - name: Build (release) (all features)
         run: cargo build --target i686-pc-windows-msvc --features all --locked --release
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Windows Build
           path: |
@@ -74,7 +75,7 @@ jobs:
       - name: Build (release) (all features)
         run: cargo build --target i686-unknown-linux-gnu --locked --features all --release
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Linux Build
           path: |
