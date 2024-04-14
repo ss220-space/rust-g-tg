@@ -1,5 +1,5 @@
 // #![forbid(unsafe_op_in_unsafe_fn)] - see github.com/rust-lang/rust/issues/121483
-
+#![allow(clippy::thread_local_initializer_can_be_made_const)]
 #[macro_use]
 mod byond;
 #[allow(dead_code)]
